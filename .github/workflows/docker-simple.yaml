@@ -12,6 +12,8 @@ on:
       - '!fail/**'
       - '!dead-end/**'
       - '!trash/**'
+    tags:
+      - '**'
 
 env:
   # Base image, usually first line of Dockerfile e.g.: `FROM alpine:3`
@@ -57,10 +59,13 @@ jobs:
           tags: |
             # Latest tag only for default branch
             type=raw,value=latest,enable={{is_default_branch}}
-            # Git branch name
+            # Git branch or tag name
             type=ref,event=branch
+            type=ref,event=tag
             # Git short SHA: master-ad132f5
-            type=sha,prefix={{branch}}-
+            # Makes sense only when used with branches,
+            # since tags are already associated with a specific commit.
+            type=sha,prefix={{branch}}-,enable=${{ github.ref_type == 'branch' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
