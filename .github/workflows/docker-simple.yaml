@@ -62,10 +62,8 @@ jobs:
             # Git branch or tag name
             type=ref,event=branch
             type=ref,event=tag
-            # Git short SHA: master-ad132f5
-            # Makes sense only when used with branches,
-            # since tags are already associated with a specific commit.
-            type=sha,prefix={{branch}}-,enable=${{ github.ref_type == 'branch' }}
+            # Git commit short SHA: master-ad132f5
+            type=sha
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
