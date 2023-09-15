@@ -1,4 +1,5 @@
 name: Docker build and publish
+run-name: Run for ${{ github.ref_name }} (${{github.ref_type}}, triggered by ${{ github.event_name }})
 
 on:
   workflow_dispatch:
@@ -96,3 +97,10 @@ jobs:
           platforms: ${{ env.BUILD_PLATFORMS }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Summary
+        run: |
+          echo "Pushed Docker Tags:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.meta.outputs.tags }}' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
